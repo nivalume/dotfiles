@@ -1,0 +1,20 @@
+# Omarchy's defaults are available on Omarchy Linux, but this file also works
+# on macOS, generic Linux, WSL, and Git Bash.
+{{- if eq .chezmoi.os "linux" }}
+[[ -r /usr/share/omarchy/default/bash/env-bootstrap ]] && source /usr/share/omarchy/default/bash/env-bootstrap
+{{- end }}
+
+[[ $- == *i* ]] || return
+
+{{- if eq .chezmoi.os "linux" }}
+[[ -n "${OMARCHY_PATH:-}" && -r "$OMARCHY_PATH/default/bash/rc" ]] && source "$OMARCHY_PATH/default/bash/rc"
+{{- end }}
+
+[[ -r "${XDG_CONFIG_HOME:-$HOME/.config}/shell/proxy.sh" ]] && source "${XDG_CONFIG_HOME:-$HOME/.config}/shell/proxy.sh"
+[[ -r "$HOME/.cargo/env" ]] && source "$HOME/.cargo/env"
+[[ -r "$HOME/.local/bin/env" ]] && source "$HOME/.local/bin/env"
+
+command -v fzf >/dev/null && eval "$(fzf --bash)"
+command -v zoxide >/dev/null && eval "$(zoxide init bash)"
+command -v mise >/dev/null && eval "$(mise activate bash)"
+command -v starship >/dev/null && eval "$(starship init bash)"

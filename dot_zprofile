@@ -1,0 +1,3 @@
+# Login-shell environment provided by language/tool installers.
+[[ -r "$HOME/.cargo/env" ]] && source "$HOME/.cargo/env"
+[[ -r "$HOME/.local/bin/env" ]] && source "$HOME/.local/bin/env"

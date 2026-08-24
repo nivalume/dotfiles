@@ -1,0 +1,13 @@
+# Keep this file small: it is loaded by every zsh process.
+export XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-$HOME/.config}"
+export XDG_CACHE_HOME="${XDG_CACHE_HOME:-$HOME/.cache}"
+export XDG_DATA_HOME="${XDG_DATA_HOME:-$HOME/.local/share}"
+
+typeset -U path PATH
+path=("$HOME/.local/bin" $path)
+{{- if eq .chezmoi.os "darwin" }}
+for brew_bin in /opt/homebrew/bin /usr/local/bin; do
+  [[ -d "$brew_bin" ]] && path=("$brew_bin" $path)
+done
+unset brew_bin
+{{- end }}

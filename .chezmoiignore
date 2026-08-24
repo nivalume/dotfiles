@@ -1,0 +1,10 @@
+README.md
+{{ if eq .chezmoi.os "windows" }}
+.zshenv
+.zprofile
+.zshrc
+.config/zsh
+.config/shell/proxy.sh
+{{ else }}
+Documents/PowerShell
+{{ end }}

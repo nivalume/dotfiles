@@ -1,0 +1,59 @@
+# Market dashboard for achannarasappa/ticker.
+# Press Tab / Shift+Tab to move between market groups.
+interval: 10
+sort: user
+show-tags: true
+show-fundamentals: true
+show-separator: true
+
+groups:
+  - name: US Market
+    watchlist:
+      # Broad-market ETFs
+      - SPY
+      - QQQ
+      - DIA
+      - IWM
+
+      # Large-cap technology and consumer platforms
+      - NVDA
+      - MSFT
+      - AAPL
+      - AMZN
+      - GOOGL
+      - META
+      - TSLA
+
+      # Financials and semiconductors
+      - BRK-B
+      - JPM
+      - AVGO
+      - AMD
+
+  - name: Crypto
+    watchlist:
+      - BTC-USD
+      - ETH-USD
+      - SOL-USD
+      - XRP-USD
+      - BNB-USD
+      - ADA-USD
+      - DOGE-USD
+
+  - name: China A-Shares
+    watchlist:
+      # Major mainland indices
+      - 000001.SS # SSE Composite
+      - 000300.SS # CSI 300
+      - 399001.SZ # Shenzhen Component
+      - 399006.SZ # ChiNext
+
+      # Representative large-cap A-shares
+      - 600519.SS # Kweichow Moutai
+      - 601318.SS # Ping An Insurance
+      - 600036.SS # China Merchants Bank
+      - 601398.SS # ICBC
+      - 000858.SZ # Wuliangye
+      - 300750.SZ # CATL
+      - 002594.SZ # BYD
+      - 000333.SZ # Midea Group
