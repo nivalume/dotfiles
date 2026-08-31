@@ -10,7 +10,17 @@ source "$ZSH_CONFIG_DIR/aliases.zsh"
 source "${XDG_CONFIG_HOME:-$HOME/.config}/shell/proxy.sh"
 
 command -v fzf >/dev/null && source <(fzf --zsh)
-command -v zoxide >/dev/null && eval "$(zoxide init zsh)"
+
+# Prefer classic z when available; it defines the `z` directory-jump command.
+for z_script in \
+  /opt/homebrew/etc/profile.d/z.sh \
+  /usr/local/etc/profile.d/z.sh \
+  /usr/share/z/z.sh; do
+  [[ -r "$z_script" ]] && source "$z_script" && break
+done
+[[ -n "${z_script:-}" && ! -r "$z_script" ]] && command -v zoxide >/dev/null && eval "$(zoxide init zsh)"
+unset z_script
+
 command -v mise >/dev/null && eval "$(mise activate zsh)"
 
 # Package locations differ between Arch Linux and Homebrew.
