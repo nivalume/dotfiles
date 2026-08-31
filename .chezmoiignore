@@ -1,4 +1,5 @@
 README.md
+nvim
 {{ if eq .chezmoi.os "windows" }}
 .zshenv
 .zprofile
@@ -7,4 +8,7 @@ README.md
 .config/shell/proxy.sh
 {{ else }}
 Documents/PowerShell
+{{ end }}
+{{ if ne .chezmoi.os "linux" }}
+.config/hypr
 {{ end }}
