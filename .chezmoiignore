@@ -6,6 +6,7 @@ nvim
 .zshrc
 .config/zsh
 .config/shell/proxy.sh
+install-cli-tools.sh
 {{ else }}
 Documents/PowerShell
 {{ end }}

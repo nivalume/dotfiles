@@ -1,0 +1,116 @@
+#!/bin/sh
+set -eu
+
+os="{{ .chezmoi.os }}"
+export PATH="${HOME}/.local/bin:${PATH:-}"
+for bin_dir in /opt/homebrew/bin /usr/local/bin; do
+  if [ -d "$bin_dir" ]; then
+    PATH="$bin_dir:$PATH"
+  fi
+done
+export PATH
+
+if [ "$os" = "windows" ]; then
+  exit 0
+fi
+
+as_root() {
+  if [ "$(id -u)" -eq 0 ]; then
+    "$@"
+  elif command -v sudo >/dev/null 2>&1; then
+    sudo "$@"
+  else
+    echo "需要 root 权限安装系统包，但未找到 sudo。请手动安装 node、npm 和 z。" >&2
+    exit 1
+  fi
+}
+
+install_system_tools() {
+  case "$os" in
+    darwin)
+      if ! command -v brew >/dev/null 2>&1; then
+        echo "macOS 需要 Homebrew 才能自动安装 node、npm 和 z。" >&2
+        exit 1
+      fi
+      brew install node z
+      ;;
+    linux)
+      if command -v pacman >/dev/null 2>&1; then
+        as_root pacman -S --needed nodejs npm z
+      elif command -v apt-get >/dev/null 2>&1; then
+        as_root apt-get update
+        as_root apt-get install -y nodejs npm z
+      elif command -v dnf >/dev/null 2>&1; then
+        as_root dnf install -y nodejs npm z
+      elif command -v apk >/dev/null 2>&1; then
+        as_root apk add nodejs npm z
+      else
+        echo "未识别的 Linux 包管理器，请手动安装 node、npm 和 z。" >&2
+        exit 1
+      fi
+      ;;
+    *)
+      echo "不支持的系统：$os。请手动安装 node、npm 和 z。" >&2
+      exit 1
+      ;;
+  esac
+}
+
+# Node/npm provide both npm and npx. Install the system packages only when one
+# of the required commands or the classic z script is missing; the script
+# itself runs only when this file changes, so `chezmoi apply` stays fast on
+# subsequent runs.
+z_available=0
+for z_script in \
+  /opt/homebrew/etc/profile.d/z.sh \
+  /usr/local/etc/profile.d/z.sh \
+  /usr/share/z/z.sh; do
+  if [ -r "$z_script" ]; then
+    z_available=1
+    break
+  fi
+done
+unset z_script
+
+if ! command -v node >/dev/null 2>&1 || \
+   ! command -v npm >/dev/null 2>&1 || \
+   ! command -v npx >/dev/null 2>&1 || \
+   [ "$z_available" -eq 0 ]; then
+  install_system_tools
+fi
+unset z_available
+
+if ! command -v node >/dev/null 2>&1 || \
+   ! command -v npm >/dev/null 2>&1 || \
+   ! command -v npx >/dev/null 2>&1; then
+  echo "node/npm 安装后仍找不到 node、npm 或 npx，请检查 PATH 后重新运行 chezmoi apply。" >&2
+  exit 1
+fi
+
+# Keep global npm binaries in the path managed by dot_zshenv, without requiring
+# write access to a system-wide npm prefix.
+npm_prefix="${HOME}/.local"
+mkdir -p "$npm_prefix/bin"
+
+packages=""
+command -v codex >/dev/null 2>&1 || packages="$packages @openai/codex"
+command -v grok >/dev/null 2>&1 || packages="$packages @xai-official/grok"
+command -v claude >/dev/null 2>&1 || packages="$packages @anthropic-ai/claude-code"
+command -v pnpm >/dev/null 2>&1 || packages="$packages pnpm"
+command -v bun >/dev/null 2>&1 || packages="$packages bun"
+
+if [ -n "$packages" ]; then
+  # shellcheck disable=SC2086 # package names are fixed constants above.
+  npm install --global --prefix "$npm_prefix" $packages
+fi
+
+missing=""
+for cli in codex grok claude pnpm bun; do
+  command -v "$cli" >/dev/null 2>&1 || missing="$missing $cli"
+done
+if [ -n "$missing" ]; then
+  echo "以下 CLI 安装后仍不可用：$missing。请检查 PATH 后重新运行 chezmoi apply。" >&2
+  exit 1
+fi
+
+echo "CLI 工具已就绪：node、npm、npx、pnpm、bun、codex、grok、claude；z 由系统包提供。"

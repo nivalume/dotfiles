@@ -12,14 +12,19 @@ source "${XDG_CONFIG_HOME:-$HOME/.config}/shell/proxy.sh"
 command -v fzf >/dev/null && source <(fzf --zsh)
 
 # Prefer classic z when available; it defines the `z` directory-jump command.
+z_loaded=0
 for z_script in \
   /opt/homebrew/etc/profile.d/z.sh \
   /usr/local/etc/profile.d/z.sh \
   /usr/share/z/z.sh; do
-  [[ -r "$z_script" ]] && source "$z_script" && break
+  if [[ -r "$z_script" ]]; then
+    source "$z_script"
+    z_loaded=1
+    break
+  fi
 done
-[[ -n "${z_script:-}" && ! -r "$z_script" ]] && command -v zoxide >/dev/null && eval "$(zoxide init zsh)"
-unset z_script
+(( z_loaded )) || { command -v zoxide >/dev/null && eval "$(zoxide init zsh)"; }
+unset z_loaded z_script
 
 command -v mise >/dev/null && eval "$(mise activate zsh)"
 

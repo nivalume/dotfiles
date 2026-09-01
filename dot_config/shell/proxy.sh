@@ -1,5 +1,6 @@
-# Shared proxy defaults for POSIX shells.
-proxy_on() {
+# Shared proxy helpers for POSIX shells. The proxy is intentionally off until
+# `proxy` is called in the current shell.
+proxy() {
   export HTTP_PROXY="http://127.0.0.1:1082"
   export HTTPS_PROXY="$HTTP_PROXY"
   export ALL_PROXY="socks5h://127.0.0.1:1082"
@@ -10,17 +11,7 @@ proxy_on() {
   export no_proxy="$NO_PROXY"
 }
 
-proxy_off() {
+unproxy() {
   unset HTTP_PROXY HTTPS_PROXY ALL_PROXY NO_PROXY
   unset http_proxy https_proxy all_proxy no_proxy
 }
-
-proxy_status() {
-  if [[ -n "${HTTP_PROXY:-}" ]]; then
-    printf 'proxy on: %s (SOCKS: %s)\n' "$HTTP_PROXY" "${ALL_PROXY:-unset}"
-  else
-    printf 'proxy off\n'
-  fi
-}
-
-proxy_on
