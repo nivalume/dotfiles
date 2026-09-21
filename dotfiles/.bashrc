@@ -1,18 +1,21 @@
 # Omarchy's defaults are available on Omarchy Linux, but this file also works
 # on macOS, generic Linux, WSL, and Git Bash.
-{{- if eq .chezmoi.os "linux" }}
-[[ -r /usr/share/omarchy/default/bash/env-bootstrap ]] && source /usr/share/omarchy/default/bash/env-bootstrap
-{{- end }}
+if [[ "$(uname -s)" == "Linux" ]]; then
+  [[ -r /usr/share/omarchy/default/bash/env-bootstrap ]] && source /usr/share/omarchy/default/bash/env-bootstrap
+fi
 
 [[ $- == *i* ]] || return
 
-{{- if eq .chezmoi.os "linux" }}
-[[ -n "${OMARCHY_PATH:-}" && -r "$OMARCHY_PATH/default/bash/rc" ]] && source "$OMARCHY_PATH/default/bash/rc"
-{{- end }}
+if [[ "$(uname -s)" == "Linux" ]]; then
+  [[ -n "${OMARCHY_PATH:-}" && -r "$OMARCHY_PATH/default/bash/rc" ]] && source "$OMARCHY_PATH/default/bash/rc"
+fi
 
 [[ -r "${XDG_CONFIG_HOME:-$HOME/.config}/shell/proxy.sh" ]] && source "${XDG_CONFIG_HOME:-$HOME/.config}/shell/proxy.sh"
-[[ -r "$HOME/.cargo/env" ]] && source "$HOME/.cargo/env"
-[[ -r "$HOME/.local/bin/env" ]] && source "$HOME/.local/bin/env"
+
+for brew_bin in /opt/homebrew/bin /usr/local/bin; do
+  [[ -d "$brew_bin" ]] && PATH="$brew_bin:$PATH"
+done
+unset brew_bin
 
 command -v fzf >/dev/null && eval "$(fzf --bash)"
 command -v zoxide >/dev/null && eval "$(zoxide init bash)"

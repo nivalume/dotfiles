@@ -1,4 +1,4 @@
-# PowerShell 7 profile for Windows. Managed by chezmoi.
+# PowerShell 7 profile for Windows. Managed by mise.
 function global:proxy {
     $env:HTTP_PROXY = "http://127.0.0.1:1082"
     $env:HTTPS_PROXY = $env:HTTP_PROXY

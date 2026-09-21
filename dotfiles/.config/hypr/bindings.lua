@@ -30,4 +30,4 @@
 
 -- Replace Omarchy's default SUPER+TAB workspace switch with a window overview.
 hl.unbind("SUPER + TAB")
-o.bind("SUPER + TAB", "Window overview", "{{ .chezmoi.homeDir }}/.local/bin/hyprswitch gui --mod-key SUPER --key TAB")
+o.bind("SUPER + TAB", "Window overview", os.getenv("HOME") .. "/.local/bin/hyprswitch gui --mod-key SUPER --key TAB")

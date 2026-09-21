@@ -1,0 +1,78 @@
+[settings]
+auto_install = false
+
+[env]
+EDITOR = { default = "nvim" }
+VISUAL = { default = "nvim" }
+PAGER = { default = "less" }
+LESS = { default = "-FRX" }
+XDG_CONFIG_HOME = { default = "{{env.HOME}}/.config" }
+XDG_CACHE_HOME = { default = "{{env.HOME}}/.cache" }
+XDG_DATA_HOME = { default = "{{env.HOME}}/.local/share" }
+_.path = "{{env.HOME}}/.local/bin"
+
+[tools]
+go = "1.26.4"
+rust = { version = "1.96.0", profile = "minimal" }
+python = "3.14.6"
+node = "26.8.1"
+pnpm = "11.25.0"
+bun = "1.4.0"
+uv = "0.11.33"
+neovim = "0.12.1"
+starship = "1.24.2"
+fzf = "0.71.0"
+just = "1.58.0"
+gh = "2.92.0"
+jq = "1.7.1"
+ripgrep = "15.1.0"
+fd = "10.4.2"
+"npm:@openai/codex" = "0.155.1"
+"npm:@xai-official/grok" = "1.0.24"
+"npm:@anthropic-ai/claude-code" = "2.1.198"
+
+[bootstrap.packages]
+"brew:zsh" = { os = "macos" }
+"brew:git" = { os = "macos" }
+"brew:z" = { os = "macos" }
+"brew:zsh-autosuggestions" = { os = "macos" }
+"brew:zsh-syntax-highlighting" = { os = "macos" }
+"pacman:zsh" = { os = "linux" }
+"pacman:git" = { os = "linux" }
+"pacman:z" = { os = "linux" }
+"pacman:zsh-autosuggestions" = { os = "linux" }
+"pacman:zsh-syntax-highlighting" = { os = "linux" }
+
+[dotfiles]
+"~/.config/mise/config.toml" = { source = "mise.toml", mode = "symlink" }
+"~/.bash_profile" = { source = "dotfiles/.bash_profile", mode = "symlink" }
+"~/.bashrc" = { source = "dotfiles/.bashrc", mode = "symlink" }
+"~/.zshenv" = { source = "dotfiles/.zshenv", mode = "symlink", variants = [
+  { os = "unix" },
+] }
+"~/.zprofile" = { source = "dotfiles/.zprofile", mode = "symlink", variants = [
+  { os = "unix" },
+] }
+"~/.zshrc" = { source = "dotfiles/.zshrc", mode = "symlink", variants = [
+  { os = "unix" },
+] }
+"~/.ticker.yaml" = { source = "dotfiles/.ticker.yaml", mode = "symlink" }
+"~/.config/codex-flags.conf" = { source = "dotfiles/.config/codex-flags.conf", mode = "symlink" }
+"~/.config/starship.toml" = { source = "dotfiles/.config/starship.toml", mode = "symlink" }
+"~/.config/nvim" = { source = "dotfiles/.config/nvim", mode = "symlink" }
+"~/.config/zsh" = { source = "dotfiles/.config/zsh", mode = "symlink", variants = [
+  { os = "unix" },
+] }
+"~/.config/shell" = { source = "dotfiles/.config/shell", mode = "symlink", variants = [
+  { os = "unix" },
+] }
+
+[dotfiles."~/.config/hypr"]
+source = "dotfiles/.config/hypr"
+mode = "symlink"
+variants = [{ os = "linux" }]
+
+[dotfiles."~/Documents/PowerShell/Microsoft.PowerShell_profile.ps1"]
+source = "dotfiles/Documents/PowerShell/Microsoft.PowerShell_profile.ps1"
+mode = "symlink"
+variants = [{ os = "windows" }]

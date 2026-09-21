@@ -1,83 +1,61 @@
-# Omarchy dotfiles
+# Mise dotfiles
 
-This repository is initialized as a chezmoi source directory for the Omarchy
-user configuration in this environment.
+This repository is a `mise bootstrap` project. It owns the global toolchain,
+shared environment defaults, native shell packages, and every dotfile under
+`dotfiles/`; chezmoi is no longer part of the setup.
 
-Managed configuration:
+`mise.toml` pins the development tools currently used on this Mac: Go, Rust,
+Python, Node.js, pnpm, Bun, uv, Neovim, common CLI tools, and Codex, Grok, and
+Claude Code. Project-level `mise.toml` files can still override these global
+defaults.
 
-- `~/.config/hypr/monitors.lua` — internal display scale `1.25`
-- `~/.config/hypr/autostart.lua` — FlowZ and the hyprswitch overview daemon
-- `~/.config/hypr/bindings.lua` — `SUPER+TAB` opens the hyprswitch window overview
-- `~/.config/codex-flags.conf` — launch the ChatGPT app through the local proxy at `127.0.0.1:1082`
-- `~/.config/nvim` — LazyVim-based Neovim configuration (symlinked to this repository for live local updates)
-- `~/.ticker.yaml` — grouped US stock, cryptocurrency, and China A-share watchlists for `ticker`
-- Zsh — fast completion, history search, fzf, classic `z` (with zoxide fallback), mise, and lightweight plugins
-- Starship — a compact Git-aware prompt shared by Zsh and PowerShell
-- Proxy — disabled by default; use `proxy` and `unproxy` for the current shell
-- CLI tools on macOS/Linux — `node`, `npm`, `npx`, `pnpm`, `bun`, `codex`, `grok`, and `claude`
-- PowerShell 7 — Windows profile with the same prompt, navigation, and proxy helpers
+## Bootstrap a new machine
 
-The Hyprland templates use `{{ .chezmoi.homeDir }}` for user-specific paths.
-The `hyprswitch` binary is installed separately at `~/.local/bin/hyprswitch`.
-The `run_onchange_install-cli-tools.sh.tmpl` script installs the shell tools
-when `chezmoi apply` first runs (or when the script changes). On macOS it
-uses Homebrew; on Linux it supports pacman, apt, dnf, and apk.
-
-## Apply with chezmoi
-
-On a new macOS or Omarchy Linux machine, install `chezmoi` and clone this
-repository as its source state:
+Install mise once, then let this repository take over:
 
 ```bash
-chezmoi init git@github.com:nivalume/dotfiles.git
-chezmoi diff
-chezmoi apply
+curl https://mise.run | sh
+mise bootstrap --from git@github.com:nivalume/dotfiles.git
 ```
 
-For this existing local checkout, initialize the local chezmoi configuration
-once, then use the same commands without a `--source` flag:
+On the checked-out repository, inspect first and then apply:
 
 ```bash
-chezmoi init --source="$(pwd)"
-chezmoi diff
-chezmoi apply
+mise bootstrap --dry-run
+mise bootstrap
+mise doctor
 ```
 
-The generated local configuration records the checkout as `sourceDir`. On
-macOS, Hyprland files are ignored; on Linux, the PowerShell profile is ignored.
-Neovim is deployed as a symlink to the repository's `nvim/` directory, so its
-configuration remains live-editable on both platforms.
+The bootstrap symlinks its own `mise.toml` to
+`~/.config/mise/config.toml`, so its exact tool versions and `[env]` defaults
+apply globally after the first run. `mise bootstrap` also installs the native
+shell pieces: Zsh, classic `z`, zsh-autosuggestions, and
+zsh-syntax-highlighting (Homebrew on macOS; pacman on Omarchy/Arch).
 
-## Cross-platform shell
+## Managed files
 
-Linux and macOS use Zsh. Native Windows uses PowerShell 7; WSL uses the Linux
-Zsh configuration. `chezmoi apply` installs Node.js/npm (including `npx`),
-pnpm, Bun, the official Codex, Grok, and Claude Code CLIs, and classic `z` where
-the platform package manager provides it. Install `starship`, `fzf`, `zoxide`,
-`mise`, and the two Zsh plugins with the platform package manager. The
-configuration gracefully skips tools that are not installed yet.
+All deployable files live in `dotfiles/` and are linked by mise. This includes
+the shell profiles, Zsh modules, proxy helpers, Starship, Codex flags, ticker,
+Neovim, Linux-only Hyprland configuration, and the Windows PowerShell profile.
+The shell hooks activate mise; shared `EDITOR`, `PAGER`, XDG defaults, and the
+user-local bin path are declared in `[env]` instead of shell-specific exports.
 
-Proxy environment variables are off in each new shell. Run `proxy` to point
-them at `127.0.0.1:1082`, and `unproxy` to remove them from the current shell
-session.
+`FlowZ` and `hyprswitch` remain external Linux applications because this
+repository contains their configuration only, not a reproducible artifact or
+package source. The old automatic Miniforge activation is deliberately not
+carried over: it would replace mise's pinned Python on `PATH`; declare a conda
+environment in the project that needs it instead.
 
-The npm-installed CLI mappings are `@openai/codex` → `codex`,
-`@xai-official/grok` → `grok`, and `@anthropic-ai/claude-code` → `claude`;
-`pnpm` and `bun` are installed from their official npm packages.
+## Updating
 
-Useful commands:
+Edit `mise.toml` or files in `dotfiles/`, then run:
 
 ```bash
-chezmoi diff
-chezmoi apply
-chezmoi add ~/.config/hypr/<file>
+mise lock
+mise bootstrap
+mise dot status
 ```
 
-Install and launch the market dashboard with:
-
-```bash
-omarchy pkg aur add ticker
-ticker
-```
-
-Inside `ticker`, use `Tab` and `Shift+Tab` to switch between market groups.
+Use `mise dot diff` before applying an existing machine. A symlink target that
+already contains a real file is intentionally refused; reconcile it first or
+use `mise dot apply --force` only after reviewing that file.
