@@ -7,4 +7,6 @@ map("n", "<C-j>", "<C-w>j", { desc = "Go to lower window" })
 map("n", "<C-k>", "<C-w>k", { desc = "Go to upper window" })
 map("n", "<C-l>", "<C-w>l", { desc = "Go to right window" })
 
+map("t", "<S-Esc>", function() Snacks.zen.zoom() end, { desc = "Toggle Terminal Fullscreen" })
+
 map("n", "<leader>tw", "<cmd>setlocal wrap!<cr>", { desc = "Toggle line wrap" })

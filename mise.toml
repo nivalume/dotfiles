@@ -9,6 +9,8 @@ LESS = { default = "-FRX" }
 XDG_CONFIG_HOME = { default = "{{env.HOME}}/.config" }
 XDG_CACHE_HOME = { default = "{{env.HOME}}/.cache" }
 XDG_DATA_HOME = { default = "{{env.HOME}}/.local/share" }
+MISE_RUSTUP_HOME = "{{env.HOME}}/.local/share/mise/rustup"
+MISE_CARGO_HOME = "{{env.HOME}}/.local/share/mise/cargo"
 _.path = "{{env.HOME}}/.local/bin"
 
 [tools]
