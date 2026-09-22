@@ -37,7 +37,7 @@ ripgrep = "15.1.0"
 fd = "10.4.2"
 "npm:@openai/codex" = "0.155.1"
 "npm:@xai-official/grok" = "1.0.24"
-"npm:@anthropic-ai/claude-code" = "2.1.198"
+"npm:@anthropic-ai/claude-code" = { version = "latest", allow_builds = ["@anthropic-ai/claude-code"] }
 "conda:conda" = "26.7.3"
 
 [bootstrap.packages]
