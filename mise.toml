@@ -1,5 +1,6 @@
 [settings]
 auto_install = false
+http_timeout = "10m"
 
 [env]
 EDITOR = { default = "nvim" }
@@ -62,6 +63,11 @@ fd = "10.4.2"
 "~/.config/codex-flags.conf" = { source = "dotfiles/.config/codex-flags.conf", mode = "symlink" }
 "~/.config/starship.toml" = { source = "dotfiles/.config/starship.toml", mode = "symlink" }
 "~/.config/nvim" = { source = "dotfiles/.config/nvim", mode = "symlink" }
+"~/Library/Application Support/Code/User/settings.json" = {
+  source = "dotfiles/.config/Code/User/settings.json",
+  mode = "symlink",
+  variants = [{ os = "macos" }],
+}
 "~/.config/zsh" = { source = "dotfiles/.config/zsh", mode = "symlink", variants = [
   { os = "unix" },
 ] }

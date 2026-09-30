@@ -1,0 +1,158 @@
+{
+    "workbench.colorTheme": "Light 2026",
+    "workbench.iconTheme": "vscode-icons",
+    "editor.fontSize": 14,
+    "claudeCode.hideOnboarding": true,
+    "claudeCode.preferredLocation": "panel",
+    "jupyter.widgetScriptSources": [
+        "jsdelivr.com",
+        "unpkg.com"
+    ],
+    // "http.proxy": "http://127.0.0.1:1082",
+    // "http.proxySupport": "on",
+
+    // ===================== Vim (LazyVim-style) =====================
+    // 与 LazyVim options 对齐：relativenumber / scrolloff=4 / clipboard=unnamedplus
+    "editor.lineNumbers": "relative",
+    "editor.cursorSurroundingLines": 4,
+    "search.seedWithNearestWord": true,
+
+    "vim.leader": "<space>",
+    "vim.useSystemClipboard": true,
+    "vim.hlsearch": true,
+    "vim.incsearch": true,
+    "vim.ignorecase": true,
+    "vim.smartcase": true,
+    "vim.highlightedyank.enable": true,
+    "vim.highlightedyank.duration": 200,
+    // gc / gcc 注释、ys/ds/cs 环绕、mini.ai 风格文本对象 (q 引号, b 括号)
+    "vim.commentary": true,
+    "vim.surround": true,
+    "vim.targets.enable": true,
+    // 类 flash.nvim：s{char}{char} 跳转
+    "vim.sneak": true,
+    "vim.sneakUseIgnorecaseAndSmartcase": true,
+
+    "vim.normalModeKeyBindingsNonRecursive": [
+        // ---- 通用 ----
+        { "before": ["<Esc>"], "commands": [":nohl"] },
+        { "before": ["<C-h>"], "commands": ["workbench.action.navigateLeft"] },
+        { "before": ["<C-j>"], "commands": ["workbench.action.navigateDown"] },
+        { "before": ["<C-k>"], "commands": ["workbench.action.navigateUp"] },
+        { "before": ["<C-l>"], "commands": ["workbench.action.navigateRight"] },
+        // 跳转历史：用 VS Code 的导航栈，gd/gr 等跨文件跳转也能回退
+        { "before": ["<C-o>"], "commands": ["workbench.action.navigateBack"] },
+        { "before": ["<C-i>"], "commands": ["workbench.action.navigateForward"] },
+
+        // ---- Buffer (bufferline) ----
+        { "before": ["H"], "commands": ["workbench.action.previousEditorInGroup"] },
+        { "before": ["L"], "commands": ["workbench.action.nextEditorInGroup"] },
+        { "before": ["[", "b"], "commands": ["workbench.action.previousEditorInGroup"] },
+        { "before": ["]", "b"], "commands": ["workbench.action.nextEditorInGroup"] },
+        { "before": ["<leader>", "b", "b"], "commands": ["workbench.action.openPreviousRecentlyUsedEditorInGroup"] },
+        { "before": ["<leader>", "`"], "commands": ["workbench.action.openPreviousRecentlyUsedEditorInGroup"] },
+        { "before": ["<leader>", "b", "d"], "commands": ["workbench.action.closeActiveEditor"] },
+        { "before": ["<leader>", "b", "D"], "commands": ["workbench.action.closeActiveEditor"] },
+        { "before": ["<leader>", "b", "o"], "commands": ["workbench.action.closeOtherEditors"] },
+        { "before": ["<leader>", "b", "l"], "commands": ["workbench.action.closeEditorsToTheLeft"] },
+        { "before": ["<leader>", "b", "r"], "commands": ["workbench.action.closeEditorsToTheRight"] },
+        { "before": ["<leader>", "b", "p"], "commands": ["workbench.action.pinEditor"] },
+        { "before": ["<leader>", "b", "P"], "commands": ["workbench.action.unpinEditor"] },
+
+        // ---- 顶层快捷 ----
+        { "before": ["<leader>", "<space>"], "commands": ["workbench.action.quickOpen"] },
+        { "before": ["<leader>", ","], "commands": ["workbench.action.showAllEditorsByMostRecentlyUsed"] },
+        { "before": ["<leader>", "/"], "commands": ["workbench.action.findInFiles"] },
+        { "before": ["<leader>", ":"], "commands": ["workbench.action.showCommands"] },
+        { "before": ["<leader>", "e"], "commands": ["workbench.view.explorer"] },
+        { "before": ["<leader>", "E"], "commands": ["workbench.files.action.showActiveFileInExplorer"] },
+        { "before": ["<leader>", "l"], "commands": ["workbench.view.extensions"] },
+        { "before": ["<leader>", "n"], "commands": ["notifications.showList"] },
+
+        // ---- f: file / find ----
+        { "before": ["<leader>", "f", "f"], "commands": ["workbench.action.quickOpen"] },
+        { "before": ["<leader>", "f", "F"], "commands": ["workbench.action.quickOpen"] },
+        { "before": ["<leader>", "f", "r"], "commands": ["workbench.action.openRecent"] },
+        { "before": ["<leader>", "f", "b"], "commands": ["workbench.action.showAllEditorsByMostRecentlyUsedEditorInGroup"] },
+        { "before": ["<leader>", "f", "n"], "commands": ["workbench.action.files.newUntitledFile"] },
+        { "before": ["<leader>", "f", "c"], "commands": ["workbench.action.openSettingsJson"] },
+        { "before": ["<leader>", "f", "t"], "commands": ["workbench.action.terminal.toggleTerminal"] },
+        { "before": ["<leader>", "f", "T"], "commands": ["workbench.action.terminal.toggleTerminal"] },
+
+        // ---- s: search ----
+        { "before": ["<leader>", "s", "g"], "commands": ["workbench.action.findInFiles"] },
+        { "before": ["<leader>", "s", "G"], "commands": ["workbench.action.findInFiles"] },
+        { "before": ["<leader>", "s", "w"], "commands": ["workbench.action.findInFiles"] },
+        { "before": ["<leader>", "s", "r"], "commands": ["workbench.action.replaceInFiles"] },
+        { "before": ["<leader>", "s", "b"], "commands": ["actions.find"] },
+        { "before": ["<leader>", "s", "s"], "commands": ["workbench.action.gotoSymbol"] },
+        { "before": ["<leader>", "s", "S"], "commands": ["workbench.action.showAllSymbols"] },
+        { "before": ["<leader>", "s", "d"], "commands": ["workbench.actions.view.problems"] },
+        { "before": ["<leader>", "s", "k"], "commands": ["workbench.action.openGlobalKeybindings"] },
+        { "before": ["<leader>", "s", "C"], "commands": ["workbench.action.showCommands"] },
+
+        // ---- LSP ----
+        { "before": ["g", "d"], "commands": ["editor.action.revealDefinition"] },
+        { "before": ["g", "D"], "commands": ["editor.action.revealDeclaration"] },
+        { "before": ["g", "r"], "commands": ["editor.action.goToReferences"] },
+        { "before": ["g", "I"], "commands": ["editor.action.goToImplementation"] },
+        { "before": ["g", "y"], "commands": ["editor.action.goToTypeDefinition"] },
+        { "before": ["K"], "commands": ["editor.action.showHover"] },
+        { "before": ["g", "K"], "commands": ["editor.action.triggerParameterHints"] },
+        { "before": ["[", "d"], "commands": ["editor.action.marker.prev"] },
+        { "before": ["]", "d"], "commands": ["editor.action.marker.next"] },
+        { "before": ["<leader>", "c", "a"], "commands": ["editor.action.quickFix"] },
+        { "before": ["<leader>", "c", "A"], "commands": ["editor.action.sourceAction"] },
+        { "before": ["<leader>", "c", "r"], "commands": ["editor.action.rename"] },
+        { "before": ["<leader>", "c", "f"], "commands": ["editor.action.formatDocument"] },
+        { "before": ["<leader>", "c", "d"], "commands": ["editor.action.showHover"] },
+        { "before": ["<leader>", "c", "o"], "commands": ["editor.action.organizeImports"] },
+        { "before": ["<leader>", "c", "s"], "commands": ["workbench.action.gotoSymbol"] },
+
+        // ---- x: diagnostics (trouble) ----
+        { "before": ["<leader>", "x", "x"], "commands": ["workbench.actions.view.problems"] },
+        { "before": ["<leader>", "x", "X"], "commands": ["workbench.actions.view.problems"] },
+
+        // ---- g: git ----
+        { "before": ["<leader>", "g", "g"], "commands": ["workbench.view.scm"] },
+        { "before": ["<leader>", "g", "s"], "commands": ["workbench.view.scm"] },
+        { "before": ["<leader>", "g", "d"], "commands": ["git.openChange"] },
+        { "before": ["<leader>", "g", "b"], "commands": ["git.blame.toggleEditorDecoration"] },
+        { "before": ["]", "h"], "commands": ["workbench.action.editor.nextChange"] },
+        { "before": ["[", "h"], "commands": ["workbench.action.editor.previousChange"] },
+        { "before": ["<leader>", "g", "h", "s"], "commands": ["git.stageSelectedRanges"] },
+        { "before": ["<leader>", "g", "h", "u"], "commands": ["git.unstageSelectedRanges"] },
+        { "before": ["<leader>", "g", "h", "r"], "commands": ["git.revertSelectedRanges"] },
+        { "before": ["<leader>", "g", "h", "S"], "commands": ["git.stage"] },
+        { "before": ["<leader>", "g", "h", "p"], "commands": ["editor.action.dirtydiff.next"] },
+
+        // ---- w: windows ----
+        { "before": ["<leader>", "-"], "commands": ["workbench.action.splitEditorDown"] },
+        { "before": ["<leader>", "|"], "commands": ["workbench.action.splitEditorRight"] },
+        { "before": ["<leader>", "w", "-"], "commands": ["workbench.action.splitEditorDown"] },
+        { "before": ["<leader>", "w", "|"], "commands": ["workbench.action.splitEditorRight"] },
+        { "before": ["<leader>", "w", "d"], "commands": ["workbench.action.closeEditorsAndGroup"] },
+        { "before": ["<leader>", "w", "m"], "commands": ["workbench.action.toggleMaximizeEditorGroup"] },
+        { "before": ["<leader>", "w", "w"], "commands": ["workbench.action.focusNextGroup"] },
+
+        // ---- u: UI toggles ----
+        { "before": ["<leader>", "u", "w"], "commands": ["editor.action.toggleWordWrap"] },
+        { "before": ["<leader>", "u", "z"], "commands": ["workbench.action.toggleZenMode"] },
+        { "before": ["<leader>", "u", "C"], "commands": ["workbench.action.selectTheme"] },
+        { "before": ["<leader>", "u", "n"], "commands": ["notifications.clearAll"] },
+
+        // ---- q: quit ----
+        { "before": ["<leader>", "q", "q"], "commands": ["workbench.action.closeWindow"] }
+    ],
+
+    "vim.visualModeKeyBindingsNonRecursive": [
+        // 缩进后保持选区
+        { "before": [">"], "commands": ["editor.action.indentLines"] },
+        { "before": ["<"], "commands": ["editor.action.outdentLines"] },
+        { "before": ["<leader>", "c", "a"], "commands": ["editor.action.quickFix"] },
+        { "before": ["<leader>", "c", "f"], "commands": ["editor.action.formatSelection"] },
+        { "before": ["<leader>", "s", "w"], "commands": ["workbench.action.findInFiles"] },
+        { "before": ["<leader>", "g", "h", "s"], "commands": ["git.stageSelectedRanges"] },
+        { "before": ["<leader>", "g", "h", "r"], "commands": ["git.revertSelectedRanges"] }
+    ]
+}
