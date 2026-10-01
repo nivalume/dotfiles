@@ -20,4 +20,5 @@ unset brew_bin
 command -v fzf >/dev/null && eval "$(fzf --bash)"
 command -v zoxide >/dev/null && eval "$(zoxide init bash)"
 command -v mise >/dev/null && eval "$(mise activate bash)"
+command -v conda >/dev/null && eval "$(conda shell.bash hook)"
 command -v starship >/dev/null && eval "$(starship init bash)"

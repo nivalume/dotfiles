@@ -1,2 +1,5 @@
 mise.local.toml
 mise.*.local.toml
+.env
+.env.*
+!.env.example

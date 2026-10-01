@@ -1,8 +1,10 @@
 [settings]
 auto_install = false
 http_timeout = "10m"
+dotfiles.root = "~/.dotfiles"
 
 [env]
+_.file = { path = "~/.config/mise/.env", redact = true }
 EDITOR = { default = "nvim" }
 VISUAL = { default = "nvim" }
 PAGER = { default = "less" }
@@ -12,6 +14,8 @@ XDG_CACHE_HOME = { default = "{{env.HOME}}/.cache" }
 XDG_DATA_HOME = { default = "{{env.HOME}}/.local/share" }
 MISE_RUSTUP_HOME = "{{env.HOME}}/.local/share/mise/rustup"
 MISE_CARGO_HOME = "{{env.HOME}}/.local/share/mise/cargo"
+CONDA_ENVS_PATH = "{{env.HOME}}/.conda/envs"
+CONDA_PKGS_DIRS = "{{env.HOME}}/.conda/pkgs"
 _.path = "{{env.HOME}}/.local/bin"
 
 [tools]
@@ -33,6 +37,7 @@ fd = "10.4.2"
 "npm:@openai/codex" = "0.155.1"
 "npm:@xai-official/grok" = "1.0.24"
 "npm:@anthropic-ai/claude-code" = "2.1.198"
+"conda:conda" = "26.7.3"
 
 [bootstrap.packages]
 "brew:zsh" = { os = "macos" }
@@ -45,42 +50,59 @@ fd = "10.4.2"
 "pacman:z" = { os = "linux" }
 "pacman:zsh-autosuggestions" = { os = "linux" }
 "pacman:zsh-syntax-highlighting" = { os = "linux" }
+"scoop:git" = { os = "windows" }
+"scoop:zoxide" = { os = "windows" }
+"scoop:eza" = { os = "windows" }
+"scoop:bat" = { os = "windows" }
 
 [dotfiles]
-"~/.config/mise/config.toml" = { source = "mise.toml", mode = "symlink" }
-"~/.bash_profile" = { source = "dotfiles/.bash_profile", mode = "symlink" }
-"~/.bashrc" = { source = "dotfiles/.bashrc", mode = "symlink" }
-"~/.zshenv" = { source = "dotfiles/.zshenv", mode = "symlink", variants = [
+"~/.config/mise/config.toml" = { source = "~/.dotfiles/mise.toml", mode = "symlink" }
+"~/.config/mise/.env" = { source = "~/.dotfiles/.env", mode = "copy" }
+"~/.config/mise/.env.example" = { source = "~/.dotfiles/.env.example", mode = "copy" }
+"~/.bash_profile" = { source = "~/.dotfiles/dotfiles/.bash_profile", mode = "symlink", variants = [
   { os = "unix" },
 ] }
-"~/.zprofile" = { source = "dotfiles/.zprofile", mode = "symlink", variants = [
+"~/.bashrc" = { source = "~/.dotfiles/dotfiles/.bashrc", mode = "symlink", variants = [
   { os = "unix" },
 ] }
-"~/.zshrc" = { source = "dotfiles/.zshrc", mode = "symlink", variants = [
+"~/.zshenv" = { source = "~/.dotfiles/dotfiles/.zshenv", mode = "symlink", variants = [
   { os = "unix" },
 ] }
-"~/.ticker.yaml" = { source = "dotfiles/.ticker.yaml", mode = "symlink" }
-"~/.config/codex-flags.conf" = { source = "dotfiles/.config/codex-flags.conf", mode = "symlink" }
-"~/.config/starship.toml" = { source = "dotfiles/.config/starship.toml", mode = "symlink" }
-"~/.config/nvim" = { source = "dotfiles/.config/nvim", mode = "symlink" }
+"~/.zprofile" = { source = "~/.dotfiles/dotfiles/.zprofile", mode = "symlink", variants = [
+  { os = "unix" },
+] }
+"~/.zshrc" = { source = "~/.dotfiles/dotfiles/.zshrc", mode = "symlink", variants = [
+  { os = "unix" },
+] }
+"~/.ticker.yaml" = { source = "~/.dotfiles/dotfiles/.ticker.yaml", mode = "symlink" }
+"~/.config/codex-flags.conf" = { source = "~/.dotfiles/dotfiles/.config/codex-flags.conf", mode = "symlink" }
+"~/.config/starship.toml" = { source = "~/.dotfiles/dotfiles/.config/starship.toml", mode = "symlink" }
+"~/.condarc" = { source = "~/.dotfiles/dotfiles/.condarc", mode = "symlink" }
+"~/.grok/config.toml" = { source = "~/.dotfiles/dotfiles/.grok/config.toml", mode = "symlink" }
+"~/.config/nvim" = { source = "~/.dotfiles/dotfiles/.config/nvim", mode = "symlink" }
 "~/Library/Application Support/Code/User/settings.json" = {
-  source = "dotfiles/.config/Code/User/settings.json",
+  source = "~/.dotfiles/dotfiles/.config/Code/User/settings.json",
   mode = "symlink",
   variants = [{ os = "macos" }],
 }
-"~/.config/zsh" = { source = "dotfiles/.config/zsh", mode = "symlink", variants = [
+"~/.config/zsh" = { source = "~/.dotfiles/dotfiles/.config/zsh", mode = "symlink", variants = [
   { os = "unix" },
 ] }
-"~/.config/shell" = { source = "dotfiles/.config/shell", mode = "symlink", variants = [
+"~/.config/shell" = { source = "~/.dotfiles/dotfiles/.config/shell", mode = "symlink", variants = [
   { os = "unix" },
 ] }
 
 [dotfiles."~/.config/hypr"]
-source = "dotfiles/.config/hypr"
+source = "~/.dotfiles/dotfiles/.config/hypr"
 mode = "symlink"
 variants = [{ os = "linux" }]
 
 [dotfiles."~/Documents/PowerShell/Microsoft.PowerShell_profile.ps1"]
-source = "dotfiles/Documents/PowerShell/Microsoft.PowerShell_profile.ps1"
+source = "~/.dotfiles/dotfiles/Documents/PowerShell/Microsoft.PowerShell_profile.ps1"
+mode = "symlink"
+variants = [{ os = "windows" }]
+
+[dotfiles."~/.wslconfig"]
+source = "~/.dotfiles/dotfiles/.wslconfig"
 mode = "symlink"
 variants = [{ os = "windows" }]

@@ -27,6 +27,7 @@ done
 unset z_loaded z_script
 
 command -v mise >/dev/null && eval "$(mise activate zsh)"
+command -v conda >/dev/null && eval "$(conda shell.zsh hook)"
 
 # Package locations differ between Arch Linux and Homebrew.
 for plugin_file in \
