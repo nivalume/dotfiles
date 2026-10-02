@@ -5,6 +5,7 @@ dotfiles.root = "~/.dotfiles"
 
 [env]
 _.file = { path = "~/.config/mise/.env", redact = true }
+_.path = ["{{env.HOME}}/.local/bin", "{{env.HOME}}/.local/share/pnpm/bin"]
 EDITOR = { default = "nvim" }
 VISUAL = { default = "nvim" }
 PAGER = { default = "less" }
@@ -17,7 +18,6 @@ MISE_RUSTUP_HOME = "{{env.HOME}}/.local/share/mise/rustup"
 MISE_CARGO_HOME = "{{env.HOME}}/.local/share/mise/cargo"
 CONDA_ENVS_PATH = "{{env.HOME}}/.conda/envs"
 CONDA_PKGS_DIRS = "{{env.HOME}}/.conda/pkgs"
-_.path = ["{{env.HOME}}/.local/bin", "{{env.HOME}}/.local/share/pnpm/bin"]
 
 [tools]
 go = "1.26.4"
@@ -43,20 +43,27 @@ fd = "10.4.2"
 [bootstrap.packages]
 "brew:zsh" = { os = "macos" }
 "brew:git" = { os = "macos" }
-"brew:z" = { os = "macos" }
-"brew:zsh-autosuggestions" = { os = "macos" }
-"brew:zsh-syntax-highlighting" = { os = "macos" }
 "pacman:zsh" = { os = "linux" }
 "pacman:git" = { os = "linux" }
-"pacman:z" = { os = "linux" }
-"pacman:zsh-autosuggestions" = { os = "linux" }
-"pacman:zsh-syntax-highlighting" = { os = "linux" }
+"apt:zsh" = { os = "linux" }
 "scoop:git" = { os = "windows" }
 "scoop:zoxide" = { os = "windows" }
 "scoop:eza" = { os = "windows" }
 "scoop:bat" = { os = "windows" }
 
+[bootstrap.repos]
+"~/.local/share/zsh/plugins/z" = { url = "https://github.com/rupa/z.git" }
+"~/.local/share/zsh/spaceship-prompt" = { url = "https://github.com/spaceship-prompt/spaceship-prompt.git" }
+"~/.local/share/zsh/plugins/zsh-completions" = { url = "https://github.com/zsh-users/zsh-completions.git" }
+"~/.local/share/zsh/plugins/zsh-autosuggestions" = { url = "https://github.com/zsh-users/zsh-autosuggestions.git" }
+"~/.local/share/zsh/plugins/zsh-syntax-highlighting" = { url = "https://github.com/zsh-users/zsh-syntax-highlighting.git" }
+
 [dotfiles]
+"~/Library/Application Support/Code/User/settings.json" = {
+  source = "~/.dotfiles/dotfiles/.config/Code/User/settings.json",
+mode = "symlink",
+variants = [{ os = "macos" }],
+}
 "~/.config/mise/config.toml" = { source = "~/.dotfiles/mise.toml", mode = "symlink" }
 "~/.config/mise/.env.example" = { source = "~/.dotfiles/.env.example", mode = "copy" }
 "~/.local/share/mise/shell/bashrc" = { source = "~/.dotfiles/dotfiles/.bashrc", mode = "copy" }
@@ -79,11 +86,6 @@ fd = "10.4.2"
 "~/.condarc" = { source = "~/.dotfiles/dotfiles/.condarc", mode = "symlink" }
 "~/.grok/config.toml" = { source = "~/.dotfiles/dotfiles/.grok/config.toml", mode = "symlink" }
 "~/.config/nvim" = { source = "~/.dotfiles/dotfiles/.config/nvim", mode = "symlink" }
-"~/Library/Application Support/Code/User/settings.json" = {
-  source = "~/.dotfiles/dotfiles/.config/Code/User/settings.json",
-  mode = "symlink",
-  variants = [{ os = "macos" }],
-}
 "~/.config/zsh" = { source = "~/.dotfiles/dotfiles/.config/zsh", mode = "symlink", variants = [
   { os = "unix" },
 ] }

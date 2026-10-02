@@ -66,10 +66,16 @@ the settings.
 
 The bootstrap symlinks its own `mise.toml` to
 `~/.config/mise/config.toml`, so its exact tool versions and `[env]` defaults
-apply globally after the first run. `mise bootstrap` also installs native
-shell pieces: Zsh, classic `z`, zsh-autosuggestions, and
-zsh-syntax-highlighting (Homebrew on macOS; pacman on Omarchy/Arch). On Windows
-it installs Git, zoxide, eza, and bat through Scoop.
+apply globally after the first run. `mise bootstrap` installs Zsh through
+Homebrew on macOS, apt on Debian/Ubuntu, or pacman on Omarchy/Arch; classic `z`
+is checked out alongside Spaceship, zsh-completions, zsh-autosuggestions, and
+zsh-syntax-highlighting under `~/.local/share/zsh/`. The Zsh configuration
+loads extra completions before `compinit`, then `z`, autosuggestions, Spaceship,
+and syntax highlighting. Starship uses its Catppuccin Powerline preset. Select
+a Nerd Font in the terminal to render prompt symbols correctly. Run `z foo`
+after visiting directories to jump to the most frequently/recently used match.
+Run `zsh` to enter the configured shell. On Windows it installs Git, zoxide,
+eza, and bat through Scoop.
 
 ## Per-machine environment
 
@@ -112,6 +118,7 @@ Edit `mise.toml` or files in `dotfiles/`, then run:
 ```bash
 mise lock
 mise install
+mise bootstrap repos apply --yes
 mise dot apply
 mise dot status
 mise doctor
