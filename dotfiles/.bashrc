@@ -18,7 +18,21 @@ done
 unset brew_bin
 
 command -v fzf >/dev/null && eval "$(fzf --bash)"
-command -v zoxide >/dev/null && eval "$(zoxide init bash)"
+z_script="$HOME/.local/share/zsh/plugins/z/z.sh"
+if [[ ! -r "$z_script" ]]; then
+  for z_script in \
+    /opt/homebrew/etc/profile.d/z.sh \
+    /usr/local/etc/profile.d/z.sh \
+    /usr/share/z/z.sh; do
+    [[ -r "$z_script" ]] && break
+  done
+fi
+if [[ -r "$z_script" ]]; then
+  source "$z_script"
+else
+  command -v zoxide >/dev/null && eval "$(zoxide init bash)"
+fi
+unset z_script
 command -v mise >/dev/null && eval "$(mise activate bash)"
 command -v conda >/dev/null && eval "$(conda shell.bash hook)"
 command -v starship >/dev/null && eval "$(starship init bash)"

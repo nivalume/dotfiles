@@ -70,12 +70,12 @@ apply globally after the first run. `mise bootstrap` installs Zsh through
 Homebrew on macOS, apt on Debian/Ubuntu, or pacman on Omarchy/Arch; classic `z`
 is checked out alongside Spaceship, zsh-completions, zsh-autosuggestions, and
 zsh-syntax-highlighting under `~/.local/share/zsh/`. The Zsh configuration
-loads extra completions before `compinit`, then `z`, autosuggestions, Spaceship,
-and syntax highlighting. Starship uses its Catppuccin Powerline preset. Select
-a Nerd Font in the terminal to render prompt symbols correctly. Run `z foo`
-after visiting directories to jump to the most frequently/recently used match.
-Run `zsh` to enter the configured shell. On Windows it installs Git, zoxide,
-eza, and bat through Scoop.
+loads extra completions before `compinit`, then autosuggestions, Spaceship, and
+syntax highlighting. Both Bash and Zsh load classic `z`. Starship uses its
+Catppuccin Powerline preset. Select a Nerd Font in the terminal to render prompt
+symbols correctly. Run `z foo` after visiting directories to jump to the most
+frequently/recently used match. Run `zsh` to enter the configured shell. On
+Windows it installs Git, zoxide, eza, and bat through Scoop.
 
 ## Per-machine environment
 
