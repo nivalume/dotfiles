@@ -12,11 +12,12 @@ LESS = { default = "-FRX" }
 XDG_CONFIG_HOME = { default = "{{env.HOME}}/.config" }
 XDG_CACHE_HOME = { default = "{{env.HOME}}/.cache" }
 XDG_DATA_HOME = { default = "{{env.HOME}}/.local/share" }
+PNPM_HOME = { default = "{{env.HOME}}/.local/share/pnpm" }
 MISE_RUSTUP_HOME = "{{env.HOME}}/.local/share/mise/rustup"
 MISE_CARGO_HOME = "{{env.HOME}}/.local/share/mise/cargo"
 CONDA_ENVS_PATH = "{{env.HOME}}/.conda/envs"
 CONDA_PKGS_DIRS = "{{env.HOME}}/.conda/pkgs"
-_.path = "{{env.HOME}}/.local/bin"
+_.path = ["{{env.HOME}}/.local/bin", "{{env.HOME}}/.local/share/pnpm/bin"]
 
 [tools]
 go = "1.26.4"
@@ -57,14 +58,12 @@ fd = "10.4.2"
 
 [dotfiles]
 "~/.config/mise/config.toml" = { source = "~/.dotfiles/mise.toml", mode = "symlink" }
-"~/.config/mise/.env" = { source = "~/.dotfiles/.env", mode = "copy" }
 "~/.config/mise/.env.example" = { source = "~/.dotfiles/.env.example", mode = "copy" }
+"~/.local/share/mise/shell/bashrc" = { source = "~/.dotfiles/dotfiles/.bashrc", mode = "copy" }
 "~/.bash_profile" = { source = "~/.dotfiles/dotfiles/.bash_profile", mode = "symlink", variants = [
   { os = "unix" },
 ] }
-"~/.bashrc" = { source = "~/.dotfiles/dotfiles/.bashrc", mode = "symlink", variants = [
-  { os = "unix" },
-] }
+"~/.bashrc/mise-dotfiles" = { block = '[[ -r "$HOME/.local/share/mise/shell/bashrc" ]] && source "$HOME/.local/share/mise/shell/bashrc"' }
 "~/.zshenv" = { source = "~/.dotfiles/dotfiles/.zshenv", mode = "symlink", variants = [
   { os = "unix" },
 ] }

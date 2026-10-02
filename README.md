@@ -12,11 +12,13 @@ Project-level `mise.toml` files can still override these global defaults.
 
 ### macOS and Linux
 
-Install mise once, then let this repository take over:
+The installer needs `curl`, and `mise bootstrap --from` needs `git` to fetch the
+repository. Minimal Debian/Ubuntu/WSL images can install both with
+`sudo apt-get update && sudo apt-get install -y curl git`. Then run:
 
 ```bash
-curl https://mise.run | sh
-mise bootstrap --from git@github.com:nivalume/dotfiles.git
+curl -fsSL https://mise.run | sh
+"$HOME/.local/bin/mise" bootstrap --from https://github.com/nivalume/dotfiles.git --from-dir "$HOME/.dotfiles" --yes
 ```
 
 On the checked-out repository, inspect first and then apply:
@@ -36,8 +38,8 @@ Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
 Invoke-RestMethod -Uri https://get.scoop.sh | Invoke-Expression
 scoop install mise git
 $env:HOME = $env:USERPROFILE
-git clone https://github.com/nivalume/dotfiles.git "$HOME\dotfiles"
-Set-Location "$HOME\dotfiles"
+git clone https://github.com/nivalume/dotfiles.git "$HOME\.dotfiles"
+Set-Location "$HOME\.dotfiles"
 mise trust
 mise bootstrap --dry-run
 mise bootstrap
@@ -71,10 +73,9 @@ it installs Git, zoxide, eza, and bat through Scoop.
 
 ## Per-machine environment
 
-The repository tracks .env.example. Copy it to .env in the repository root
-and add per-machine values such as ARK_API_KEY. Git ignores root .env.
-The checkout must be available as `~/.dotfiles`; if it lives elsewhere,
-create a directory symlink or junction at that path:
+`mise bootstrap --from` is pinned to `~/.dotfiles`, which is the source root in
+`mise.toml`. If you already cloned the repository somewhere else, make
+`~/.dotfiles` point to that checkout before applying:
 
 ```powershell
 New-Item -ItemType Junction -Path "$HOME\.dotfiles" -Target "E:\path\to\dotfiles"
@@ -84,10 +85,11 @@ New-Item -ItemType Junction -Path "$HOME\.dotfiles" -Target "E:\path\to\dotfiles
 ln -s /path/to/dotfiles ~/.dotfiles
 ```
 
-`mise dot apply` copies root .env to `~/.config/mise/.env`, which the Zsh, Bash, and PowerShell
-mise activation hooks load into each shell. The home-relative source paths
-let you run `mise dot apply` from any directory. After editing root .env,
-run apply and open a new shell or reload the profile.
+The repository tracks `.env.example` and deploys it to
+`~/.config/mise/.env.example`. For machine-specific values, copy it to
+`~/.config/mise/.env` and add values such as `ARK_API_KEY`. That file is local
+to the machine and is loaded by mise when a shell starts; it is optional, so a
+fresh bootstrap does not require a secret file.
 
 ## Managed files
 
@@ -96,6 +98,8 @@ the shell profiles, Zsh modules, proxy helpers, Starship, Codex flags, ticker,
 Neovim, Linux-only Hyprland configuration, and the Windows PowerShell profile.
 The shell hooks activate mise; shared `EDITOR`, `PAGER`, XDG defaults, and the
 user-local bin path are declared in `[env]` instead of shell-specific exports.
+The same environment sets `PNPM_HOME` and adds its `bin/` directory to `PATH`,
+so pnpm global tools are available in a new shell without running `pnpm setup`.
 
 `FlowZ` and `hyprswitch` remain external Linux applications because this
 repository contains their configuration only, not a reproducible artifact or
