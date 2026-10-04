@@ -22,8 +22,9 @@ if (Test-Path -LiteralPath $localEnv) {
 }
 Remove-Variable localEnv, line -ErrorAction SilentlyContinue
 
+# Proxy is off by default; run `proxy [port]` (default 7897) to enable it in this session.
 function global:proxy {
-    param([string]$Port = "10808")
+    param([string]$Port = "7897")
     $env:HTTP_PROXY = "http://127.0.0.1:$Port"
     $env:HTTPS_PROXY = $env:HTTP_PROXY
     $env:ALL_PROXY = $env:HTTP_PROXY
@@ -35,7 +36,7 @@ function global:proxy {
 }
 
 function global:setproxy {
-    param([string]$Port = "10808")
+    param([string]$Port = "7897")
     proxy -Port $Port
 }
 
