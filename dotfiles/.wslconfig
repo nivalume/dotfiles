@@ -1,4 +1,17 @@
+# Loaded by Windows from %USERPROFILE%\.wslconfig. Restart with `wsl --shutdown`.
+# Mirrored networking plus DNS tunneling lets the host TUN proxy capture WSL
+# traffic and DNS. No HTTP_PROXY setup is required inside the distro.
+# autoProxy still copies a Windows system proxy into the environment when one is set.
+
 [wsl2]
+memory=16GB
+processors=6
+swap=8GB
 networkingMode=mirrored
 dnsTunneling=true
 autoProxy=true
+
+[experimental]
+autoMemoryReclaim=gradual
+sparseVhd=true
+hostAddressLoopback=true
