@@ -1,36 +1,26 @@
-# PowerShell 7 profile for Windows. Managed by mise.
-# Native Windows exposes USERPROFILE; the shared mise config uses HOME for its
-# XDG and Rust paths, so provide the POSIX-compatible alias before activation.
-if (-not $env:HOME) {
-    $env:HOME = $HOME
-}
+# PowerShell 7 profile for Windows. Managed by ~/.dotfiles (see install.ps1).
+[Console]::InputEncoding = [Console]::OutputEncoding = $OutputEncoding = [System.Text.UTF8Encoding]::new($false)
 
-if (-not $env:XDG_CONFIG_HOME) {
-    $env:XDG_CONFIG_HOME = Join-Path $HOME ".config"
-}
-if (-not $env:XDG_CACHE_HOME) {
-    $env:XDG_CACHE_HOME = Join-Path $HOME ".cache"
-}
-if (-not $env:XDG_DATA_HOME) {
-    $env:XDG_DATA_HOME = Join-Path $HOME ".local/share"
-}
-# Keep mise's tool store on its native Windows path even though applications
-# use XDG_DATA_HOME for their own data. Use the same location that bootstrap
-# installs into, even if this shell inherited an older MISE_DATA_DIR value.
-$env:MISE_DATA_DIR = Join-Path $env:LOCALAPPDATA "mise"
-if (-not $env:PAGER) {
-    $env:PAGER = "more"
-}
-if (-not $env:LESS) {
-    $env:LESS = "-FRX"
-}
-if (-not $env:EDITOR) {
-    $env:EDITOR = "nvim"
-}
-if (-not $env:VISUAL) {
-    $env:VISUAL = $env:EDITOR
-}
+# POSIX-style variables so tools that read HOME / XDG_* agree with the Unix setup.
+if (-not $env:HOME) { $env:HOME = $HOME }
+if (-not $env:XDG_CONFIG_HOME) { $env:XDG_CONFIG_HOME = Join-Path $HOME ".config" }
+if (-not $env:XDG_CACHE_HOME) { $env:XDG_CACHE_HOME = Join-Path $HOME ".cache" }
+if (-not $env:XDG_DATA_HOME) { $env:XDG_DATA_HOME = Join-Path $HOME ".local/share" }
+if (-not $env:PAGER) { $env:PAGER = Join-Path $env:ProgramFiles "Git\usr\bin\less.exe" }
+if (-not $env:LESS) { $env:LESS = "-FRX" }
+if (-not $env:EDITOR) { $env:EDITOR = "nvim" }
+if (-not $env:VISUAL) { $env:VISUAL = $env:EDITOR }
 
+# Machine-local secrets: KEY=VALUE lines in ~/.config/dotfiles/local.env (never committed).
+$localEnv = Join-Path $env:XDG_CONFIG_HOME "dotfiles/local.env"
+if (Test-Path -LiteralPath $localEnv) {
+    foreach ($line in Get-Content -LiteralPath $localEnv) {
+        if ($line -match '^\s*([A-Za-z_][A-Za-z0-9_]*)\s*=\s*(.*?)\s*$') {
+            Set-Item -Path "Env:$($Matches[1])" -Value $Matches[2].Trim('"', "'")
+        }
+    }
+}
+Remove-Variable localEnv, line -ErrorAction SilentlyContinue
 
 function global:proxy {
     param([string]$Port = "10808")
@@ -55,26 +45,18 @@ function global:unproxy {
         ForEach-Object { Remove-Item "Env:$_" -ErrorAction SilentlyContinue }
 }
 
-# Activate mise before starting tools that it manages so their shell hooks load.
-if (Get-Command mise -ErrorAction SilentlyContinue) {
-    (& mise activate pwsh) | Out-String | Invoke-Expression
-
-    # Resolve Conda through mise directly. Calling the prefix's conda.exe avoids
-    # relying on mise's PATH refresh in an already-open shell.
-    $condaRoot = & mise where "conda:conda" 2>$null
-    if ($condaRoot) {
-        $condaRoot = ($condaRoot | Select-Object -First 1).Trim()
-        $condaExecutable = Join-Path $condaRoot "Scripts/conda.exe"
-        if (Test-Path -LiteralPath $condaExecutable) {
-            (& $condaExecutable shell.powershell hook) | Out-String | Invoke-Expression
-        }
-        Remove-Variable condaRoot, condaExecutable -ErrorAction SilentlyContinue
+# Conda: load the shell hook lazily on first use to keep startup fast.
+function global:conda {
+    Remove-Item Function:\conda -ErrorAction SilentlyContinue
+    $condaExe = Join-Path $env:USERPROFILE "scoop\apps\miniconda3\current\Scripts\conda.exe"
+    if (-not (Test-Path -LiteralPath $condaExe)) {
+        $condaExe = (Get-Command conda.exe -ErrorAction SilentlyContinue | Select-Object -First 1).Source
     }
+    if (-not $condaExe) { Write-Error "conda was not found (scoop install extras/miniconda3)"; return }
+    (& $condaExe shell.powershell hook) | Out-String | Invoke-Expression
+    conda @args
 }
 
-if (Get-Command starship -ErrorAction SilentlyContinue) {
-    Invoke-Expression (&starship init powershell)
-}
 if (Get-Command zoxide -ErrorAction SilentlyContinue) {
     Invoke-Expression (& { (zoxide init powershell | Out-String) })
 }
@@ -117,3 +99,8 @@ if (Get-Command bat -ErrorAction SilentlyContinue) {
 
 function global:.. { Set-Location .. }
 function global:... { Set-Location ../.. }
+
+# Prompt last: starship (Catppuccin Powerline preset).
+if (Get-Command starship -ErrorAction SilentlyContinue) {
+    Invoke-Expression (&starship init powershell)
+}

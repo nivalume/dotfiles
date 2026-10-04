@@ -1,0 +1,27 @@
+# Scoop packages for Windows. "bucket NAME" adds a bucket; other lines are packages.
+bucket extras
+git
+7zip
+zoxide
+eza
+bat
+fzf
+ripgrep
+fd
+jq
+gh
+just
+lazygit
+starship
+neovim
+gcc
+make
+tree-sitter
+go
+python
+nodejs
+pnpm
+bun
+uv
+rustup
+extras/miniconda3

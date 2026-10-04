@@ -1,7 +1,7 @@
 HISTFILE="${XDG_STATE_HOME:-$HOME/.local/state}/zsh/history"
 mkdir -p "${HISTFILE:h}"
 HISTSIZE=50000
-SAVEHIST=10000
+SAVEHIST=50000
 
 setopt append_history
 setopt extended_history
@@ -17,8 +17,3 @@ setopt auto_cd
 setopt auto_pushd
 setopt pushd_ignore_dups
 setopt no_beep
-
-export PAGER="less"
-export LESS="-FRX"
-export EDITOR="${EDITOR:-nvim}"
-export VISUAL="$EDITOR"

@@ -1,0 +1,45 @@
+# Interactive bash configuration. install.sh adds a block to ~/.bashrc that
+# sources this file, so distro defaults (for example Omarchy) stay intact.
+# Works on macOS, generic Linux, WSL and Git Bash.
+[[ -r "${XDG_CONFIG_HOME:-$HOME/.config}/shell/env.sh" ]] && source "${XDG_CONFIG_HOME:-$HOME/.config}/shell/env.sh"
+
+[[ $- == *i* ]] || return
+
+[[ -r "${XDG_CONFIG_HOME:-$HOME/.config}/shell/proxy.sh" ]] && source "${XDG_CONFIG_HOME:-$HOME/.config}/shell/proxy.sh"
+
+[[ -r "${XDG_CONFIG_HOME:-$HOME/.config}/shell/aliases.sh" ]] && source "${XDG_CONFIG_HOME:-$HOME/.config}/shell/aliases.sh"
+
+HISTSIZE=50000
+HISTFILESIZE=50000
+HISTCONTROL=ignoreboth:erasedups
+shopt -s histappend checkwinsize
+
+command -v fzf >/dev/null && eval "$(fzf --bash)"
+
+z_script="$HOME/.local/share/zsh/plugins/z/z.sh"
+if [[ ! -r "$z_script" ]]; then
+  for z_script in \
+    /opt/homebrew/etc/profile.d/z.sh \
+    /usr/local/etc/profile.d/z.sh \
+    /usr/share/z/z.sh; do
+    [[ -r "$z_script" ]] && break
+  done
+fi
+if [[ -r "$z_script" ]]; then
+  source "$z_script"
+else
+  command -v zoxide >/dev/null && eval "$(zoxide init bash)"
+fi
+unset z_script
+
+# Load conda's shell hook lazily on first use to keep startup fast.
+if command -v conda >/dev/null 2>&1; then
+  __conda_bin="$(command -v conda)"
+  conda() {
+    unset -f conda
+    eval "$("$__conda_bin" shell.bash hook)"
+    conda "$@"
+  }
+fi
+
+command -v starship >/dev/null && eval "$(starship init bash)"

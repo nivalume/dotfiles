@@ -1,0 +1,6 @@
+# Global npm packages (all platforms)
+@openai/codex
+@xai-official/grok
+@anthropic-ai/claude-code
+@fission-ai/openspec
+pm2

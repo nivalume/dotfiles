@@ -1,6 +1,5 @@
-mise.local.toml
-mise.*.local.toml
 .env
 .env.*
-!.env.example
+local.env
 *.zwc
+*.bak-*

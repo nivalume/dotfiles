@@ -1,0 +1,25 @@
+# Arch / Omarchy: sudo pacman -S --needed - < packages/pacman.txt
+zsh
+git
+starship
+zoxide
+eza
+bat
+fzf
+ripgrep
+fd
+jq
+github-cli
+just
+lazygit
+neovim
+tree-sitter-cli
+go
+python
+nodejs
+npm
+pnpm
+bun
+uv
+rustup
+ttf-firacode-nerd

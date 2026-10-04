@@ -1,0 +1,5 @@
+# path	url
+~/.local/share/zsh/plugins/z	https://github.com/rupa/z.git
+~/.local/share/zsh/plugins/zsh-completions	https://github.com/zsh-users/zsh-completions.git
+~/.local/share/zsh/plugins/zsh-autosuggestions	https://github.com/zsh-users/zsh-autosuggestions.git
+~/.local/share/zsh/plugins/zsh-syntax-highlighting	https://github.com/zsh-users/zsh-syntax-highlighting.git

@@ -1,3 +1,4 @@
+# Aliases shared by bash and zsh (sourced from the bashrc and .zshrc).
 if command -v eza >/dev/null; then
   alias l='eza --icons=auto --group-directories-first'
   alias ll='eza -lah --icons=auto --group-directories-first'

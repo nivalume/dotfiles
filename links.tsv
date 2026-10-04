@@ -1,0 +1,24 @@
+# os	source (relative to dotfiles/)	target
+# os: all | unix | macos | linux | windows
+# target tokens: ~ = home, {APPDATA}, {LOCALAPPDATA} (Windows only)
+all	.condarc	~/.condarc
+all	.ticker.yaml	~/.ticker.yaml
+all	.grok/config.toml	~/.grok/config.toml
+all	.config/codex-flags.conf	~/.config/codex-flags.conf
+all	.config/starship.toml	~/.config/starship.toml
+all	.config/nvim	~/.config/nvim
+unix	.bash_profile	~/.bash_profile
+unix	.zshenv	~/.zshenv
+unix	.zprofile	~/.zprofile
+unix	.zshrc	~/.zshrc
+unix	.config/zsh	~/.config/zsh
+unix	.config/shell	~/.config/shell
+linux	.config/hypr	~/.config/hypr
+linux	.config/Code/User/settings.json	~/.config/Code/User/settings.json
+linux	.config/Code/User/keybindings.json	~/.config/Code/User/keybindings.json
+macos	.config/Code/User/settings.json	~/Library/Application Support/Code/User/settings.json
+macos	.config/Code/User/keybindings.json	~/Library/Application Support/Code/User/keybindings.json
+windows	.config/Code/User/settings.json	{APPDATA}/Code/User/settings.json
+windows	.config/Code/User/keybindings.json	{APPDATA}/Code/User/keybindings.json
+windows	Documents/PowerShell/Microsoft.PowerShell_profile.ps1	~/Documents/PowerShell/Microsoft.PowerShell_profile.ps1
+windows	.wslconfig	~/.wslconfig
