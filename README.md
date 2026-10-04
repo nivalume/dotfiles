@@ -1,8 +1,20 @@
 # dotfiles
 
 Cross-platform dotfiles for macOS, Linux (including Omarchy and WSL) and Windows.
-No version manager is required: tools come from the system package manager
-(Homebrew, pacman, apt or Scoop), and two small scripts link the config files.
+The configuration files are identical everywhere; only the way tools get installed
+differs by OS:
+
+| OS | Tools and versions | System packages | Entry point |
+| --- | --- | --- | --- |
+| macOS, Linux | [mise](https://mise.jdx.dev) (`dotfiles/.config/mise/config.toml`) | Homebrew, pacman or apt | `install.sh` |
+| Windows | Scoop (`packages/scoop.txt`) | Scoop | `install.ps1` |
+
+The versions pinned in the mise config match what Scoop installs, so Go, Python,
+Node, pnpm, Bun, uv, Neovim, Starship and the other CLIs line up across systems.
+When you upgrade a tool, change the mise pin and upgrade it in Scoop too.
+Rust comes from rustup everywhere, and Windows installs Miniconda from Scoop
+where Unix uses mise's conda backend. Codex, Grok, Claude Code, OpenSpec and pm2
+are npm globals listed in `packages/npm-globals.txt` on every OS.
 
 | Path | Purpose |
 | --- | --- |
@@ -10,7 +22,7 @@ No version manager is required: tools come from the system package manager
 | `links.tsv` | Which file goes where, per OS (`all`, `unix`, `macos`, `linux`, `windows`) |
 | `repos.tsv` | Git checkouts for zsh plugins (`install.sh packages`) |
 | `packages/` | Scoop, Homebrew, pacman and apt lists, npm globals, VS Code extensions |
-| `install.sh` / `install.ps1` | Link manager and package installer |
+| `install.sh` / `install.ps1` | Link manager and package installer (they only need bash or PowerShell) |
 
 ## Set up a machine
 
@@ -19,7 +31,7 @@ macOS / Linux:
 ```bash
 git clone git@github.com:nivalume/dotfiles.git ~/.dotfiles
 cd ~/.dotfiles
-./install.sh all      # packages, zsh plugins, npm globals, then links
+./install.sh all      # system packages, mise and its tools, zsh plugins, npm globals, links
 ./install.sh status
 ```
 
@@ -46,8 +58,10 @@ the two differ. Turning on Developer Mode removes the need for this.
 - **Shells**: zsh (`.zshrc`, `.config/zsh/`), bash (`.config/shell/bashrc`, added to
   `~/.bashrc` as a marked block so distro defaults stay), and PowerShell 7. All of
   them use [Starship](https://starship.rs) with the Catppuccin Powerline preset,
-  `z`/zoxide, fzf, proxy helpers (`proxy` / `unproxy`) and a lazily loaded conda.
-  Select a Nerd Font (FiraCode Nerd Font) in the terminal.
+  `z`/zoxide, fzf, shared aliases, and a lazily loaded conda. Select a Nerd Font
+  (FiraCode Nerd Font) in the terminal.
+- **Proxy**: off by default. Run `proxy [port]` (default 7897) in a shell to enable
+  it for that session, and `unproxy` to turn it off.
 - **Environment**: `.config/shell/env.sh` (bash/zsh) and the PowerShell profile set
   `EDITOR`, `PAGER`, XDG directories, `PNPM_HOME` and PATH.
 - **Secrets**: put machine-local values such as `ARK_API_KEY` in
@@ -58,10 +72,7 @@ the two differ. Turning on Developer Mode removes the need for this.
   the LazyVim keymap (Space as leader) on top of the Vim extension, and are linked
   to the right per-OS location. Extensions are listed in
   `packages/vscode-extensions.txt`.
-- **Toolchain**: Go, Rust (rustup), Python, Node, pnpm, Bun, uv, Miniconda and
-  CLI tools are installed natively. Conda environments live in `~/.conda/`
-  (`.condarc`). Codex, Grok, Claude Code, OpenSpec and pm2 are npm globals in
-  `packages/npm-globals.txt`.
+- **Conda**: environments live in `~/.conda/` (`.condarc`).
 - **Windows only**: PowerShell profile and `.wslconfig` (mirrored networking,
   DNS tunneling, proxy inheritance; run `wsl --shutdown` after changing it).
 - **Linux only**: Hyprland configuration.
@@ -69,5 +80,6 @@ the two differ. Turning on Developer Mode removes the need for this.
 ## Updating
 
 Edit files under `dotfiles/` (or the live files, then `adopt` on Windows), add new
-files to `links.tsv`, and re-run `apply`. Add packages to the matching list in
-`packages/` and re-run `packages`.
+files to `links.tsv`, and re-run `apply`. Add system packages to the matching list in
+`packages/`, change tool versions in the mise config (and Scoop), and re-run
+`packages`.

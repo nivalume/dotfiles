@@ -1,9 +1,10 @@
 #!/usr/bin/env bash
-# Dotfiles manager for macOS and Linux (no mise required).
+# Dotfiles manager for macOS and Linux. Tool versions come from mise
+# (dotfiles/.config/mise/config.toml); Windows uses install.ps1 and Scoop.
 #   ./install.sh apply      link everything listed in links.tsv
 #   ./install.sh status     show the state of every link
 #   ./install.sh adopt      move existing real files into the repo, then link them
-#   ./install.sh packages   install packages, zsh plugins, npm globals, editor extensions
+#   ./install.sh packages   system packages, zsh plugins, mise tools, npm globals, editor extensions
 #   ./install.sh all        packages, then apply
 # Add --force to back up conflicting files (name.bak-YYYYMMDD) and replace them.
 set -euo pipefail
@@ -125,15 +126,16 @@ install_packages() {
     fi
   done <"$ROOT/repos.tsv"
 
-  if command -v rustup >/dev/null && ! rustup toolchain list 2>/dev/null | grep -q .; then
-    rustup default stable
+  # Tool versions come from mise on macOS and Linux (Windows uses Scoop).
+  # Use the repo's config directly so this works before the links are applied.
+  export PATH="$HOME/.local/bin:$PATH"
+  if ! command -v mise >/dev/null; then
+    curl -fsSL https://mise.run | sh
   fi
-  if command -v npm >/dev/null; then
-    # shellcheck disable=SC2046
-    npm install -g $(list "$ROOT/packages/npm-globals.txt")
-  else
-    echo "npm not found; skipping npm globals." >&2
-  fi
+  export MISE_GLOBAL_CONFIG_FILE="$SRC/.config/mise/config.toml"
+  mise install --yes
+  # shellcheck disable=SC2046
+  mise exec -- npm install -g $(list "$ROOT/packages/npm-globals.txt")
   if command -v code >/dev/null; then
     local have ext
     have="$(code --list-extensions)"

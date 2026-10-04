@@ -15,7 +15,7 @@ __path_prepend() {
   case ":$PATH:" in *":$1:"*) return 0 ;; esac
   PATH="$1:$PATH"
 }
-for __d in /usr/local/bin /opt/homebrew/bin "$HOME/.cargo/bin" "$PNPM_HOME" "$HOME/.local/bin"; do
+for __d in /usr/local/bin /opt/homebrew/bin "$HOME/.cargo/bin" "$PNPM_HOME" "$XDG_DATA_HOME/mise/shims" "$HOME/.local/bin"; do
   __path_prepend "$__d"
 done
 unset __d

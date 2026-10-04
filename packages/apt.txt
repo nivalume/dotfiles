@@ -1,17 +1,10 @@
-# Debian / Ubuntu / WSL. starship, uv, bun, rustup, miniconda are not in apt:
-# install them from their upstream installers if needed.
+# Debian / Ubuntu / WSL system packages. mise itself is installed by install.sh
+# (https://mise.run) because it is not in apt.
+# Language runtimes and developer CLIs come from mise (dotfiles/.config/mise/config.toml).
 zsh
 git
 curl
 unzip
-fzf
-ripgrep
-fd-find
-jq
-bat
+build-essential
 zoxide
-neovim
-golang
-python3
-nodejs
-npm
+bat

@@ -33,6 +33,9 @@ else
 fi
 unset z_script
 
+# mise provides the toolchain on macOS and Linux (Windows uses Scoop).
+command -v mise >/dev/null && eval "$(mise activate zsh)"
+
 # Load conda's shell hook lazily on first use to keep startup fast.
 if command -v conda >/dev/null 2>&1; then
   __conda_bin="$(command -v conda)"

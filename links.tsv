@@ -13,6 +13,7 @@ unix	.zprofile	~/.zprofile
 unix	.zshrc	~/.zshrc
 unix	.config/zsh	~/.config/zsh
 unix	.config/shell	~/.config/shell
+unix	.config/mise/config.toml	~/.config/mise/config.toml
 linux	.config/hypr	~/.config/hypr
 linux	.config/Code/User/settings.json	~/.config/Code/User/settings.json
 linux	.config/Code/User/keybindings.json	~/.config/Code/User/keybindings.json
