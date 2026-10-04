@@ -70,6 +70,18 @@ function Get-LinkTarget($Item) {
     return ([string]$t).TrimStart('\', '?')
 }
 
+# Hash of file content with CRLF folded to LF, so git autocrlf checkouts do not look like drift.
+function Get-ContentKey([string]$Path) {
+    $b = [IO.File]::ReadAllBytes($Path)
+    $o = New-Object System.Collections.Generic.List[byte] $b.Length
+    for ($i = 0; $i -lt $b.Length; $i++) {
+        if ($b[$i] -eq 13 -and $i + 1 -lt $b.Length -and $b[$i + 1] -eq 10) { continue }
+        $o.Add($b[$i])
+    }
+    $sha = [Security.Cryptography.SHA256]::Create()
+    return [BitConverter]::ToString($sha.ComputeHash($o.ToArray()))
+}
+
 function Get-State($Link) {
     $item = Get-Item -LiteralPath $Link.Target -Force -ErrorAction SilentlyContinue
     if (-not $item) { return 'missing' }
@@ -83,7 +95,7 @@ function Get-State($Link) {
         return 'conflict'
     }
     if ($item.PSIsContainer) { return 'conflict' }
-    if ((Get-FileHash -LiteralPath $Link.Target).Hash -eq (Get-FileHash -LiteralPath $Link.Source).Hash) { return 'copy' }
+    if ((Get-ContentKey $Link.Target) -eq (Get-ContentKey $Link.Source)) { return 'copy' }
     return 'drift'
 }
 
