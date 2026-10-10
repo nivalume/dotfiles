@@ -7,7 +7,7 @@ base_url = "https://ark.cn-beijing.volces.com/api/coding/v3"
 name = "Doubao Seed 2.1 Lite"
 description = "Volcengine Ark Coding Plan model; 1M context"
 env_key = "ARK_API_KEY"
-context_window = 1_000_000
+context_window = 1000000
 
 [model."doubao-seed-2.1-pro"]
 model = "doubao-seed-2.1-pro"
@@ -15,7 +15,7 @@ base_url = "https://ark.cn-beijing.volces.com/api/coding/v3"
 name = "Doubao Seed 2.1 Pro"
 description = "Volcengine Ark Coding Plan model; 1M context"
 env_key = "ARK_API_KEY"
-context_window = 1_000_000
+context_window = 1000000
 
 [model.deepseek-v4-flash]
 model = "deepseek-v4-flash"
@@ -23,7 +23,7 @@ base_url = "https://ark.cn-beijing.volces.com/api/coding/v3"
 name = "DeepSeek V4 Flash"
 description = "Volcengine Ark Coding Plan model; 1M context"
 env_key = "ARK_API_KEY"
-context_window = 1_000_000
+context_window = 1000000
 
 [model.doubao-seed-evolving]
 model = "doubao-seed-evolving"
@@ -31,7 +31,7 @@ base_url = "https://ark.cn-beijing.volces.com/api/coding/v3"
 name = "Doubao Seed Evolving"
 description = "Volcengine Ark Coding Plan model; 1M context"
 env_key = "ARK_API_KEY"
-context_window = 1_000_000
+context_window = 1000000
 
 [model."glm-5.3-flash"]
 model = "glm-5.3-flash"
@@ -44,12 +44,13 @@ env_key = "ARK_API_KEY"
 default_skills_installs_purged = true
 official_marketplace_auto_installed = true
 
-  [[marketplace.sources]]
-  name = "xAI Official"
-  git = "https://github.com/xai-org/plugin-marketplace.git"
+[[marketplace.sources]]
+name = "xAI Official"
+git = "https://github.com/xai-org/plugin-marketplace.git"
 
 [models]
-default = "doubao-seed-2.1-lite"
+default = "grok-4.7"
+default_reasoning_effort = "high"
 
 [ui]
 max_thoughts_width = 120
