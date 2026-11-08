@@ -1,0 +1,8 @@
+{{- if ne .chezmoi.os "windows" -}}
+#!/usr/bin/env bash
+set -euo pipefail
+export DOTFILES_INSTALL_GROK={{ if index . "installGrok" }}true{{ else }}false{{ end }}
+export DOTFILES_INSTALL_CODEX={{ if index . "installCodex" }}true{{ else }}false{{ end }}
+export DOTFILES_INSTALL_CLAUDE={{ if index . "installClaudeCode" }}true{{ else }}false{{ end }}
+exec bash {{ joinPath .chezmoi.workingTree "scripts/setup.sh" | shellQuote }}
+{{- end -}}

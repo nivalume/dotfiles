@@ -1,0 +1,27 @@
+{{- if eq .chezmoi.os "windows" }}
+.config/fish
+.config/tmux
+.config/nvim
+.config/lazygit
+.config/herdr
+.config/gwq
+.local/bin
+{{- else }}
+AppData
+.config/powershell
+{{- end }}
+{{- if ne .chezmoi.os "darwin" }}
+.config/herdr
+.config/gwq
+.local/bin/herdr-move-workspace
+{{- end }}
+.config/fish/config-local.fish
+.config/fish/fish_variables
+.config/fish/completions
+.config/fish/conf.d
+.config/nvim/lazy-lock.json
+AppData/Local/nvim/lazy-lock.json
+.config/powershell/profile.local.ps1
+.config/tmux/tmux-private.conf
+.config/tmux/plugins
+.config/lazygit/state.yml

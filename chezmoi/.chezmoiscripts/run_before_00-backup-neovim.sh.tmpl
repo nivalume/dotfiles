@@ -1,0 +1,14 @@
+{{- if ne .chezmoi.os "windows" -}}
+#!/usr/bin/env bash
+set -euo pipefail
+nvim_dir="$HOME/.config/nvim"
+if [[ -d "$nvim_dir" && ! -f "$nvim_dir/.dotc-managed" ]]; then
+    backup_root="$HOME/.local/state/dotc/backups"
+    mkdir -p "$backup_root"
+    backup=$(mktemp -d "$backup_root/nvim-XXXXXXXX")
+    mkdir -p "$backup/nvim"
+    cp -a "$nvim_dir/." "$backup/nvim/"
+    if [[ -L "$nvim_dir" ]]; then rm "$nvim_dir"; else rm -rf "$nvim_dir"; fi
+    printf '[dotfiles] Previous Neovim configuration backed up to %s/nvim\n' "$backup"
+fi
+{{- end -}}

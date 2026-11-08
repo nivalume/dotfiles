@@ -1,8 +1,5 @@
-# Nvim
-dot_config/nvim/lua/craftzdog/plugins/local.lua
-dot_config/nvim/nvim-pack-lock.json
+.DS_Store
+/tmp/
+/platforms/macos/Brewfile.lock.json
+lazy-lock.json
 
-# Homebrew
-Brewfile.lock.json
-
-tmp

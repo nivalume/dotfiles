@@ -1,0 +1,34 @@
+#!/bin/sh
+
+set -eu
+
+install_latest_linux() {
+	case "$(uname -m)" in
+		x86_64|amd64) nvim_arch=x86_64 ;;
+		aarch64|arm64) nvim_arch=arm64 ;;
+		*) echo "No Neovim release archive for $(uname -m)" >&2; return 1 ;;
+	esac
+
+	tmp_dir=$(mktemp -d)
+	trap 'rm -rf "$tmp_dir"' EXIT HUP INT TERM
+	archive="nvim-linux-${nvim_arch}.tar.gz"
+	curl -fL "https://github.com/neovim/neovim/releases/latest/download/$archive" -o "$tmp_dir/$archive"
+	tar -xzf "$tmp_dir/$archive" -C "$tmp_dir"
+	rm -rf "$HOME/.local/opt/neovim"
+	mkdir -p "$HOME/.local/opt"
+	mv "$tmp_dir/nvim-linux-${nvim_arch}" "$HOME/.local/opt/neovim"
+	ln -sfn "$HOME/.local/opt/neovim/bin/nvim" "$HOME/.local/bin/nvim"
+}
+
+case "$(uname -s)" in
+	Darwin) brew upgrade neovim ;;
+	Linux)
+		if [ -r /etc/os-release ]; then . /etc/os-release; else ID=unknown; fi
+		case "${ID:-unknown}" in
+			arch|omarchy) sudo pacman -Syu neovim ;;
+			*) install_latest_linux ;;
+		esac
+		;;
+	MINGW*|MSYS*|CYGWIN*) powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "scoop update neovim" ;;
+	*) echo "No Neovim update method for $(uname -s)" >&2; exit 1 ;;
+esac

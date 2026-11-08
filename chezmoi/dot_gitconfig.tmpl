@@ -1,0 +1,20 @@
+[user]
+    email = {{ .email | quote }}
+    name = {{ .name | quote }}
+[github]
+    user = {{ .githubUser | quote }}
+[init]
+    defaultBranch = main
+[core]
+    excludesfile = ~/.gitignore
+    editor = nvim
+    pager = delta
+[pull]
+    rebase = false
+[push]
+    default = simple
+[include]
+    path = ~/.config/git/aliases.gitconfig
+    path = ~/.config/git/ghq.gitconfig
+    path = ~/.config/git/delta.gitconfig
+    path = ~/.gitconfig.private

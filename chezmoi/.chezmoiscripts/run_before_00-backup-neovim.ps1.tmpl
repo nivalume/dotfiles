@@ -1,0 +1,15 @@
+{{- if eq .chezmoi.os "windows" -}}
+$ErrorActionPreference = 'Stop'
+$nvimDir = Join-Path $env:LOCALAPPDATA 'nvim'
+if ((Test-Path $nvimDir) -and -not (Test-Path (Join-Path $nvimDir '.dotc-managed'))) {
+    $backup = Join-Path $env:LOCALAPPDATA ('dotc\backups\nvim-' + [guid]::NewGuid().ToString())
+    New-Item -ItemType Directory -Force -Path $backup | Out-Null
+    Get-ChildItem -LiteralPath $nvimDir -Force | Copy-Item -Destination $backup -Recurse -Force
+    if ((Get-Item -LiteralPath $nvimDir -Force).Attributes -band [IO.FileAttributes]::ReparsePoint) {
+        [IO.Directory]::Delete($nvimDir)
+    } else {
+        Remove-Item -LiteralPath $nvimDir -Recurse -Force
+    }
+    Write-Host "[dotfiles] Previous Neovim configuration backed up to $backup"
+}
+{{- end -}}

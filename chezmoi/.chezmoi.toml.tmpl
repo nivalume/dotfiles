@@ -1,0 +1,13 @@
+{{- $email := promptStringOnce . "email" "Email address" -}}
+{{- $name := promptStringOnce . "name" "Full name" -}}
+{{- $githubUser := promptStringOnce . "githubUser" "GitHub username" -}}
+
+sourceDir = {{ .chezmoi.workingTree | quote }}
+
+[data]
+    email = {{ $email | quote }}
+    name = {{ $name | quote }}
+    githubUser = {{ $githubUser | quote }}
+    installGrok = {{ index . "installGrok" | default false }}
+    installCodex = {{ index . "installCodex" | default false }}
+    installClaudeCode = {{ index . "installClaudeCode" | default false }}
