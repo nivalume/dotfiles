@@ -3,7 +3,7 @@ set -euo pipefail
 source "$(dirname "$0")/lib/common.sh"
 load_versions
 
-mkdir -p "$HOME/.local/bin" "$HOME/.local/share/nodejs" "$HOME/.local/opt"
+mkdir -p "$HOME/.local/bin" "$HOME/.local/share/nodejs" "$HOME/.local/opt" "$HOME/.nvm"
 temp_dir=$(mktemp -d)
 trap 'rm -rf "$temp_dir"' EXIT
 
@@ -12,6 +12,7 @@ if [[ -s "$HOME/.nvm/nvm.sh" ]]; then
     current_nvm=$(unset NPM_CONFIG_PREFIX; export NVM_DIR="$HOME/.nvm"; . "$NVM_DIR/nvm.sh" --no-use; nvm --version) || true
 fi
 if [[ "$current_nvm" != "$NVM_UNIX_VERSION" ]]; then
+    mkdir -p "$HOME/.nvm"
     download "https://raw.githubusercontent.com/nvm-sh/nvm/v${NVM_UNIX_VERSION}/install.sh" "$temp_dir/nvm.sh"
     PROFILE=/dev/null NVM_DIR="$HOME/.nvm" NODE_VERSION='' bash "$temp_dir/nvm.sh"
     [[ -s "$HOME/.nvm/nvm.sh" ]] || die "NVM installation failed."
